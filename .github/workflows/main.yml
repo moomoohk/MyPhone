@@ -104,7 +104,7 @@ jobs:
     
     steps:
       - name: Setup VS Dev Environment
-        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+        uses: ilammy/msvc-dev-cmd@v1
         
       - name: Download build artifacts
         uses: actions/download-artifact@v3.0.0
