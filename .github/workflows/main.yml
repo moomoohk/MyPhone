@@ -28,24 +28,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.5
 
+      - name: Restore MSIX from cache
+        id: restore-msix
+        uses: actions/cache/restore@main
+        with:
+          path: ${{ env.Solution_Name }}
+          key: msix-${{ hashFiles(env.Solution_Name) }}
+
       # Install the .NET Core workload
       - name: Install .NET Core
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 6.0.x
 
       # Add MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
       - name: Setup MSBuild
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         uses: microsoft/setup-msbuild@v2
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore the application
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
         env:
           Configuration: ${{ matrix.configuration }}
 
       # Create the app package by building and packaging the project
       - name: Create the app package
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         run: |
             msbuild $env:Solution_Name `
                 /p:Configuration=$env:Configuration `
@@ -61,12 +72,21 @@ jobs:
           Configuration: ${{ matrix.configuration }}
           Platform: ${{ matrix.platform }}
 
+      - name: Save MSIX to cache
+        uses: actions/cache/save@main
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
+        with:
+          path: ${{ env.Solution_Name }}
+          key: msix-${{ hashFiles(env.Solution_Name) }}
+
       # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload MSIX package
         uses: actions/upload-artifact@v4
+        if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         with:
           name: ${{ env.Unsigned_Artifact_Name }}
           path: ${{ env.Solution_Name }}\\Packages
+          overwrite: true
           
           
           
