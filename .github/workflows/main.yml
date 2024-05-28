@@ -79,7 +79,7 @@ jobs:
           path: ${{ env.Solution_Name }}\\Packages
           key: msix-${{ hashFiles(env.Solution_Name) }}-${{ matrix.platform }}
 
-      - run: pwd && ls -la
+      - run: pwd && ls
 
       # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload MSIX package
