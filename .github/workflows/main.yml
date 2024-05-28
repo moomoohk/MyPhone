@@ -32,8 +32,8 @@ jobs:
         id: restore-msix
         uses: actions/cache/restore@main
         with:
-          path: ${{ env.Solution_Name }}
-          key: msix-${{ hashFiles(env.Solution_Name) }}
+          path: ${{ env.Solution_Name }}\\Packages
+          key: msix-${{ hashFiles(env.Solution_Name) }}-${{ matrix.platform }}
 
       # Install the .NET Core workload
       - name: Install .NET Core
@@ -76,8 +76,8 @@ jobs:
         uses: actions/cache/save@main
         if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         with:
-          path: ${{ env.Solution_Name }}
-          key: msix-${{ hashFiles(env.Solution_Name) }}
+          path: ${{ env.Solution_Name }}\\Packages
+          key: msix-${{ hashFiles(env.Solution_Name) }}-${{ matrix.platform }}
 
       # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload MSIX package
