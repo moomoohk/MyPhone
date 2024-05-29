@@ -35,6 +35,8 @@ jobs:
           path: ${{ env.Solution_Name }}\\Packages
           key: msix-${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}-${{ matrix.platform }}
 
+      - run: ls ${{ env.Solution_Name }}
+
       # Install the .NET Core workload
       - name: Install .NET Core
         if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
@@ -71,6 +73,8 @@ jobs:
           Appx_Package_Dir: Packages\
           Configuration: ${{ matrix.configuration }}
           Platform: ${{ matrix.platform }}
+      
+      - run: ls ${{ env.Solution_Name }}
 
       - name: Save MSIX to cache
         uses: actions/cache/save@main
