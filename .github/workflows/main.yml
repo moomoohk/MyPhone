@@ -35,7 +35,10 @@ jobs:
           path: ${{ env.Solution_Name }}\\Packages
           key: msix-${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}-${{ matrix.platform }}
 
-      - run: ls ${{ env.Solution_Name }}
+      - run: |
+          ls ${{ env.Solution_Name }}
+          echo ${{ hashFiles(env.Solution_Name) }}
+          echo ${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}
 
       # Install the .NET Core workload
       - name: Install .NET Core
@@ -74,7 +77,10 @@ jobs:
           Configuration: ${{ matrix.configuration }}
           Platform: ${{ matrix.platform }}
       
-      - run: ls ${{ env.Solution_Name }}
+      - run: |
+          ls ${{ env.Solution_Name }}
+          echo ${{ hashFiles(env.Solution_Name) }}
+          echo ${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}
 
       - name: Save MSIX to cache
         uses: actions/cache/save@main
