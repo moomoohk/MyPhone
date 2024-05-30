@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: ${{ env.Solution_Name }}\\Packages
-          key: msix-${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}-${{ matrix.platform }}
+          key: msix-${{ hashFiles(env.Solution_Name, '!**/bin', '!**/obj', '!**/Packages') }}-${{ matrix.platform }}
 
       - run: |
           ls ${{ env.Solution_Name }}
@@ -78,17 +78,16 @@ jobs:
           Platform: ${{ matrix.platform }}
       
       - run: |
-          cd ${{ env.Solution_Name }}
-          ls .
-          echo ${{ hashFiles('.') }}
-          echo ${{ hashFiles('.', '!bin', '!obj', '!Packages') }}
+          ls ${{ env.Solution_Name }}
+          echo ${{ hashFiles(env.Solution_Name) }}
+          echo ${{ hashFiles(env.Solution_Name, '!**/bin', '!**/obj', '!**/Packages') }}
 
       - name: Save MSIX to cache
         uses: actions/cache/save@main
         if: ${{ steps.restore-msix.outputs.cache-hit != 'true' }}
         with:
           path: ${{ env.Solution_Name }}\\Packages
-          key: msix-${{ hashFiles(env.Solution_Name, '!bin', '!obj', '!Packages') }}-${{ matrix.platform }}
+          key: msix-${{ hashFiles(env.Solution_Name, '!**/bin', '!**/obj', '!**/Packages') }}-${{ matrix.platform }}
 
       # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload MSIX package
