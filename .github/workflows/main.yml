@@ -144,7 +144,7 @@ jobs:
           
       - name: Sign the bundle
         run: |
-          SignTool sign /fd SHA256 /a /f GitHubActionsWorkflow.pfx /p "${{ secrets.TESTING_PFX_PASSPHRASE }}" "${env:Bundle_Install_Path}\${{ env.MSIX_Bunde_FileName }}"
+          SignTool sign /fd SHA256 /a /f GitHubActionsWorkflow.pfx /p "${{ secrets.TESTING_PFX_PASSPHRASE }}" /t http://timestamp.digicert.com "${{ env.Bundle_Install_Path }}\${{ env.MSIX_Bunde_FileName }}"
       
       # Remove the pfx
       - name: Post Decode the pfx
