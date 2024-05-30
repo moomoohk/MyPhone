@@ -80,8 +80,8 @@ jobs:
       - run: |
           cd ${{ env.Solution_Name }}
           ls .
-          echo ${{ hashFiles(.) }}
-          echo ${{ hashFiles(., '!bin', '!obj', '!Packages') }}
+          echo ${{ hashFiles('.') }}
+          echo ${{ hashFiles('.', '!bin', '!obj', '!Packages') }}
 
       - name: Save MSIX to cache
         uses: actions/cache/save@main
