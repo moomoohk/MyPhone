@@ -10,7 +10,7 @@
 
   <Identity
     Name="11602GoodTimeStudio.MyPhoneAssistant"
-    Publisher="CN=26FBF7DF-0382-4C02-8985-D8DE01CEF4A3"
+    Publisher="Publisher="CN=26FBF7DF-0382-4C02-8985-D8DE01CEF4A3, OU=Organizational Unit, O=Organization, L=City, S=State, C=US"
     Version="1.0.0.0" />
 
   <Properties>
